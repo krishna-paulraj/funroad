@@ -8,6 +8,7 @@ import { NavbarSidebar } from "./navbar-sidebar";
 import { useState } from "react";
 import { MenuIcon } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "nextjs-toploader/app";
 
 const popoins = Poppins({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ const navbarItems = [
 
 export const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { isSignedIn } = useUser();
 
   const [isSidebarOpen, setIsSidbarOpen] = useState(false);
@@ -83,11 +85,11 @@ export const Navbar = () => {
         </div>
       ) : (
         <Button
-          asChild
           variant="noShadow"
           className="hidden lg:flex border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-pink-400 text-black hover:bg-black hover:text-white transition-colors text-lg"
+          onClick={() => router.push("/dashboard")}
         >
-          <Link href="/dashboard">Dashboard</Link>
+          Dashboard
         </Button>
       )}
 

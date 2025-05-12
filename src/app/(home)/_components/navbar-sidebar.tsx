@@ -36,7 +36,7 @@ export const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
           {items.map((item) => (
             <Link key={item.href} href={item.href} className="p-0 h-12">
               <Button
-                variant={pathname === item.href ? "active" : "default"}
+                variant={pathname === item.href ? "neutral" : "default"}
                 className="bg-main w-2xs"
               >
                 {item.children}

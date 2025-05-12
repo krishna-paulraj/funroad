@@ -24,7 +24,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${dmSans.className} antialiased`}>
           <TRPCReactProvider>
-            <NextTopLoader color="#EC407A" showSpinner={false} />
+            <NextTopLoader color="black" showSpinner={false} />
             {children}
           </TRPCReactProvider>
         </body>

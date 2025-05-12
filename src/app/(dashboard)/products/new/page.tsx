@@ -11,6 +11,7 @@ import { SelectCategory } from "../_components/select-category";
 import { useMutation } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { useRouter } from "nextjs-toploader/app";
 
 const BlockNoteViewComponent = dynamic(
   () => import("../_components/block-note-view"),
@@ -34,6 +35,7 @@ type ProductFormData = z.infer<typeof productSchema>;
 
 const Page = () => {
   const trpc = useTRPC();
+  const router = useRouter();
   const { user } = useUser();
 
   const [content, setContent] = useState<object | null>(null);
@@ -42,6 +44,7 @@ const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     setValue,
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -50,26 +53,32 @@ const Page = () => {
       categoryId: "681259f728a1f445d73c5721",
       subCategoryId: "68125a3828a1f445d73c5728",
     },
+    mode: "all",
   });
 
-  const createProduct = useMutation(
-    trpc.products.createProduct.mutationOptions({
-      onSuccess: () => {
-        alert("✅ Product created successfully");
-      },
-      onError: (err) => {
-        console.error(err);
-        alert("❌ Failed to create product");
-      },
-    }),
-  );
+  const title = watch("title");
+  const price = watch("price");
+
+  const createProductOptions = trpc.products.createProduct.mutationOptions();
+
+  const createProduct = useMutation({
+    ...createProductOptions,
+    onSuccess: (data) => {
+      console.log("Created product:", data);
+      router.push(`/products/edit/${data.id}`);
+    },
+  });
+
+  const isLoading = createProduct.isPending;
 
   const onSubmit = (data: ProductFormData) => {
-    createProduct.mutate(data);
+    const res = createProduct.mutate(data);
+    console.log("res", res);
   };
 
   useEffect(() => {
     if (content) {
+      console.log("Setting content:", content);
       setValue("contentDescription", content);
     }
   }, [content, setValue]);
@@ -81,6 +90,7 @@ const Page = () => {
         <Button
           className="mr-15 md:mr-0 bg-pink-400"
           onClick={handleSubmit(onSubmit)}
+          disabled={isLoading || !title || price < 0}
         >
           Create
         </Button>
@@ -104,7 +114,13 @@ const Page = () => {
         </div>
 
         <h1 className="mt-2">Price</h1>
-        <Input {...register("price")} className="w-80" type="number" min="0" />
+        <Input
+          {...register("price")}
+          className="w-80"
+          type="number"
+          min="0"
+          defaultValue={0}
+        />
         {errors.price && <p className="text-red-500">{errors.price.message}</p>}
 
         <h1 className="mt-2">Select Category</h1>

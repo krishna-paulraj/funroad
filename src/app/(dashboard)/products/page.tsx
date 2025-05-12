@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import CreateProductBanner from "../_components/create-product-banner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 const Page = () => {
   const router = useRouter();

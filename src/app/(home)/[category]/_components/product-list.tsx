@@ -17,12 +17,9 @@ export const ProductList = ({ categorySlug, subCategorySlug }: Props) => {
 
   const router = useRouter();
 
-  const productQuery = subCategorySlug
-    ? trpc.products.getByCategoryAndSub.queryOptions({
-        categorySlug,
-        subCategorySlug,
-      })
-    : trpc.products.getByCategory.queryOptions({ categorySlug });
+  const productQuery = trpc.products.getByCategory.queryOptions({
+    categorySlug,
+  });
 
   const { data: products } = useQuery(productQuery);
 

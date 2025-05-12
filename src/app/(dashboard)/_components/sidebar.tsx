@@ -15,7 +15,7 @@ import {
 import { Poppins } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -37,17 +37,17 @@ const poppins = Poppins({
 const mainRoutes = [
   {
     name: "Home",
-    slug: "dashboard",
+    slug: "/dashboard",
     icon: Home,
   },
   {
     name: "Products",
-    slug: "products",
+    slug: "/products",
     icon: Store,
   },
   {
     name: "Analytics",
-    slug: "analytics",
+    slug: "/analytics",
     icon: ChartSpline,
   },
 ];
@@ -60,7 +60,7 @@ const personalRoutes = [
   },
   {
     name: "Library",
-    slug: "library",
+    slug: "/library",
     icon: Bookmark,
   },
 ];
@@ -68,7 +68,7 @@ const personalRoutes = [
 const settingsRoutes = [
   {
     name: "Settings",
-    slug: "settings",
+    slug: "/settings",
     icon: Settings,
   },
 ];
